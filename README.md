@@ -21,37 +21,6 @@ TrainTicketSystem/
 └── README.md
 ```
 
-## **VERY IMPORTANT: DataBase Schema**
+## **VERY IMPORTANT!!!**
 
-### **User**
-- id  
-- username  
-- password  
-- role  
-- enabled  
-
-### **Train**
-- train_id  
-- train_no  
-- departure_station  
-- arrival_station  
-- departure_time  
-- arrival_time  
-
-### **Station**
-- station_id  
-- name  
-
-### **Ticket**
-- ticket_id  
-- train_id  
-- seat_type  
-- remaining  
-- price  
-
-### **Order**
-- order_id  
-- user_id  
-- ticket_id  
-- status  
-- purchase_time  
+**请仔细阅读 `!!!开发规范.md` 和 `UNIFIED_SPEC.md`!!!**
