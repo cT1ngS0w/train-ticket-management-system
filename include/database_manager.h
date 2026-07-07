@@ -4,7 +4,9 @@
 
 #include <QString>
 
-// 登录模块只需要用户认证结果，不直接关心数据库表的内部查询细节。
+class QSqlDatabase;
+
+// 登录模块只需要这些用户信息，不需要知道 SQL 怎么写。
 struct UserAccountRecord
 {
     int userId = 0;
@@ -16,9 +18,28 @@ struct UserAccountRecord
 class DatabaseManager
 {
 public:
+    DatabaseManager();
+    ~DatabaseManager();
+
     bool initialize();
 
-    // 接口先行：后续真正的 User 表查询应在这里实现，不能写到 UI 或 LoginManager 中。
+    bool isOpen() const;
+    bool wasCreated() const;
+    QString databasePath() const;
+    QString lastError() const;
+
     std::optional<UserAccountRecord> findUserByCredentials(const QString &username,
                                                            const QString &password) const;
+
+private:
+    bool openDatabase();
+    void closeDatabase();
+    bool createTables();
+    bool executeStatement(const QString &sql);
+    QString resolveDatabasePath() const;
+
+    QString m_connectionName;
+    QString m_databasePath;
+    mutable QString m_lastError;
+    bool m_wasCreated = false;
 };
