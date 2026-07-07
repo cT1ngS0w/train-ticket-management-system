@@ -277,7 +277,7 @@ void LoginDialog::handleGuestAccess()
 void LoginDialog::showMessage(const QString &message, bool isError)
 {
     m_messageLabel->setText(message);
-    // 错误和成功提示使用不同底色，便于答辩演示时快速观察验证结果。
+    // 错误和成功提示使用不同底色，便于快速观察验证结果。
     m_messageLabel->setStyleSheet(isError
                                       ? QStringLiteral("color: #9f1239; background: #fff1f2; border: 1px solid #fecdd3;")
                                       : QStringLiteral("color: #14532d; background: #f0fdf4; border: 1px solid #bbf7d0;"));

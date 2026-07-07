@@ -23,29 +23,6 @@ QString roleName(UserRole role)
     return QStringLiteral("未知角色");
 }
 
-QFrame *createModuleCard(const QString &title, const QString &description, QWidget *parent)
-{
-    // 主窗口模块卡片目前只做入口占位，后续各模块完成后可替换为真实操作区。
-    auto *card = new QFrame(parent);
-    card->setObjectName(QStringLiteral("moduleCard"));
-
-    auto *layout = new QVBoxLayout(card);
-    layout->setContentsMargins(18, 16, 18, 16);
-    layout->setSpacing(8);
-
-    auto *titleLabel = new QLabel(title, card);
-    titleLabel->setObjectName(QStringLiteral("cardTitle"));
-
-    auto *descriptionLabel = new QLabel(description, card);
-    descriptionLabel->setObjectName(QStringLiteral("cardDescription"));
-    descriptionLabel->setWordWrap(true);
-
-    layout->addWidget(titleLabel);
-    layout->addWidget(descriptionLabel);
-    layout->addStretch();
-
-    return card;
-}
 }
 
 MainWindow::MainWindow(const LoginResult &loginResult, QWidget *parent)
@@ -55,7 +32,7 @@ MainWindow::MainWindow(const LoginResult &loginResult, QWidget *parent)
     setWindowTitle(QStringLiteral("火车票务管理系统"));
     resize(980, 640);
 
-    // 主窗口沿用登录页的绿色系视觉，保证系统入口和登录后首页风格一致。
+    // 主窗口的样式放在这里，颜色跟登录页保持一致。
     setStyleSheet(QStringLiteral(R"QSS(
         QMainWindow {
             background: #eef2f3;
@@ -120,7 +97,7 @@ MainWindow::MainWindow(const LoginResult &loginResult, QWidget *parent)
     pageLayout->setContentsMargins(28, 28, 28, 24);
     pageLayout->setSpacing(22);
 
-    // 顶部区域展示当前用户和角色，方便后续根据角色做权限控制。
+    // 顶部显示当前用户和身份。
     auto *headerPanel = new QFrame(centralWidget);
     headerPanel->setObjectName(QStringLiteral("headerPanel"));
 
@@ -151,30 +128,70 @@ MainWindow::MainWindow(const LoginResult &loginResult, QWidget *parent)
     headerLayout->addLayout(titleBlock, 1);
     headerLayout->addWidget(roleBadge, 0, Qt::AlignTop);
 
-    // 四个模块卡片对应项目规范中的 login、train、ticket、statistics 模块。
+    // 下面四个卡片先手动写出来，后面其他模块做好后再接功能。
     auto *gridLayout = new QGridLayout;
     gridLayout->setSpacing(16);
 
-    gridLayout->addWidget(createModuleCard(QStringLiteral("登录模块"),
-                                           QStringLiteral("当前会话和角色状态已准备就绪。"),
-                                           centralWidget),
-                          0,
-                          0);
-    gridLayout->addWidget(createModuleCard(QStringLiteral("车次管理"),
-                                           QStringLiteral("车次、站点和时刻表功能将在此接入。"),
-                                           centralWidget),
-                          0,
-                          1);
-    gridLayout->addWidget(createModuleCard(QStringLiteral("票务办理"),
-                                           QStringLiteral("订票、退票、改签和订单流程将在此接入。"),
-                                           centralWidget),
-                          1,
-                          0);
-    gridLayout->addWidget(createModuleCard(QStringLiteral("统计分析"),
-                                           QStringLiteral("销售统计和报表汇总功能将在此接入。"),
-                                           centralWidget),
-                          1,
-                          1);
+    auto *loginCard = new QFrame(centralWidget);
+    loginCard->setObjectName(QStringLiteral("moduleCard"));
+    auto *loginCardLayout = new QVBoxLayout(loginCard);
+    loginCardLayout->setContentsMargins(18, 16, 18, 16);
+    loginCardLayout->setSpacing(8);
+    auto *loginTitleLabel = new QLabel(QStringLiteral("登录模块"), loginCard);
+    loginTitleLabel->setObjectName(QStringLiteral("cardTitle"));
+    auto *loginDescriptionLabel = new QLabel(QStringLiteral("当前会话和角色状态已准备就绪。"), loginCard);
+    loginDescriptionLabel->setObjectName(QStringLiteral("cardDescription"));
+    loginDescriptionLabel->setWordWrap(true);
+    loginCardLayout->addWidget(loginTitleLabel);
+    loginCardLayout->addWidget(loginDescriptionLabel);
+    loginCardLayout->addStretch();
+
+    auto *trainCard = new QFrame(centralWidget);
+    trainCard->setObjectName(QStringLiteral("moduleCard"));
+    auto *trainCardLayout = new QVBoxLayout(trainCard);
+    trainCardLayout->setContentsMargins(18, 16, 18, 16);
+    trainCardLayout->setSpacing(8);
+    auto *trainTitleLabel = new QLabel(QStringLiteral("车次管理"), trainCard);
+    trainTitleLabel->setObjectName(QStringLiteral("cardTitle"));
+    auto *trainDescriptionLabel = new QLabel(QStringLiteral("车次、站点和时刻表功能将在此接入。"), trainCard);
+    trainDescriptionLabel->setObjectName(QStringLiteral("cardDescription"));
+    trainDescriptionLabel->setWordWrap(true);
+    trainCardLayout->addWidget(trainTitleLabel);
+    trainCardLayout->addWidget(trainDescriptionLabel);
+    trainCardLayout->addStretch();
+
+    auto *ticketCard = new QFrame(centralWidget);
+    ticketCard->setObjectName(QStringLiteral("moduleCard"));
+    auto *ticketCardLayout = new QVBoxLayout(ticketCard);
+    ticketCardLayout->setContentsMargins(18, 16, 18, 16);
+    ticketCardLayout->setSpacing(8);
+    auto *ticketTitleLabel = new QLabel(QStringLiteral("票务办理"), ticketCard);
+    ticketTitleLabel->setObjectName(QStringLiteral("cardTitle"));
+    auto *ticketDescriptionLabel = new QLabel(QStringLiteral("订票、退票、改签和订单流程将在此接入。"), ticketCard);
+    ticketDescriptionLabel->setObjectName(QStringLiteral("cardDescription"));
+    ticketDescriptionLabel->setWordWrap(true);
+    ticketCardLayout->addWidget(ticketTitleLabel);
+    ticketCardLayout->addWidget(ticketDescriptionLabel);
+    ticketCardLayout->addStretch();
+
+    auto *statisticsCard = new QFrame(centralWidget);
+    statisticsCard->setObjectName(QStringLiteral("moduleCard"));
+    auto *statisticsCardLayout = new QVBoxLayout(statisticsCard);
+    statisticsCardLayout->setContentsMargins(18, 16, 18, 16);
+    statisticsCardLayout->setSpacing(8);
+    auto *statisticsTitleLabel = new QLabel(QStringLiteral("统计分析"), statisticsCard);
+    statisticsTitleLabel->setObjectName(QStringLiteral("cardTitle"));
+    auto *statisticsDescriptionLabel = new QLabel(QStringLiteral("销售统计和报表汇总功能将在此接入。"), statisticsCard);
+    statisticsDescriptionLabel->setObjectName(QStringLiteral("cardDescription"));
+    statisticsDescriptionLabel->setWordWrap(true);
+    statisticsCardLayout->addWidget(statisticsTitleLabel);
+    statisticsCardLayout->addWidget(statisticsDescriptionLabel);
+    statisticsCardLayout->addStretch();
+
+    gridLayout->addWidget(loginCard, 0, 0);
+    gridLayout->addWidget(trainCard, 0, 1);
+    gridLayout->addWidget(ticketCard, 1, 0);
+    gridLayout->addWidget(statisticsCard, 1, 1);
 
     pageLayout->addWidget(headerPanel);
     pageLayout->addLayout(gridLayout);
