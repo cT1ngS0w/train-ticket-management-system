@@ -23,4 +23,4 @@ TrainTicketSystem/
 
 ## **VERY IMPORTANT!!!**
 
-**请仔细阅读 `!!!开发规范.md` 和 `UNIFIED_SPEC.md`!!!**
+**请仔细阅读 `!!!开发规范.md` 和 `!!!合作规范.md`!!!**
