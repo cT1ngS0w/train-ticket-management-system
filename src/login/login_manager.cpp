@@ -31,18 +31,18 @@ LoginResult LoginManager::authenticate(const QString &username, const QString &p
     const QString trimmedUsername = username.trimmed();
 
     if (trimmedUsername.isEmpty()) {
-        return {false, UserRole::Guest, QString(), QStringLiteral("Username is required.")};
+        return {false, UserRole::Guest, QString(), QStringLiteral("请输入用户名。")};
     }
 
     if (password.isEmpty()) {
-        return {false, UserRole::Guest, trimmedUsername, QStringLiteral("Password is required.")};
+        return {false, UserRole::Guest, trimmedUsername, QStringLiteral("请输入密码。")};
     }
 
     if (m_databaseManager == nullptr) {
         return {false,
                 UserRole::Guest,
                 trimmedUsername,
-                QStringLiteral("Login service is not connected.")};
+                QStringLiteral("登录服务尚未连接。")};
     }
 
     // 账号密码认证只通过 DatabaseManager 接口，保持 UI -> LoginManager -> DatabaseManager 的分层。
@@ -52,26 +52,26 @@ LoginResult LoginManager::authenticate(const QString &username, const QString &p
         return {false,
                 UserRole::Guest,
                 trimmedUsername,
-                QStringLiteral("Invalid username or password.")};
+                QStringLiteral("用户名或密码无效。")};
     }
 
     if (!userAccount->enabled) {
         return {false,
                 roleFromDatabaseValue(userAccount->role),
                 userAccount->username,
-                QStringLiteral("Account is disabled.")};
+                QStringLiteral("账号已被禁用。")};
     }
 
     return {true,
             roleFromDatabaseValue(userAccount->role),
             userAccount->username,
-            QStringLiteral("Login successful.")};
+            QStringLiteral("登录成功。")};
 }
 
 LoginResult LoginManager::loginAsGuest() const
 {
     return {true,
             UserRole::Guest,
-            QStringLiteral("Guest"),
-            QStringLiteral("Guest access granted.")};
+            QStringLiteral("游客"),
+            QStringLiteral("游客访问已开启。")};
 }
