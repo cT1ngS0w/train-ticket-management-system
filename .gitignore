@@ -72,3 +72,6 @@ Testing/
 *.aux
 *.log
 *.out
+
+# temp folders
+temp/*
