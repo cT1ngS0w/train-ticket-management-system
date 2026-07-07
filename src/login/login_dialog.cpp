@@ -46,6 +46,7 @@ LoginDialog::LoginDialog(const LoginManager &loginManager, QWidget *parent)
     mainLayout->addWidget(m_messageLabel);
     mainLayout->addLayout(buttonLayout);
 
+    // 登录按钮和回车键复用同一处理函数，避免登录流程分散在多个 UI 事件里。
     connect(loginButton, &QPushButton::clicked, this, [this]() {
         handleLogin();
     });
@@ -64,6 +65,7 @@ LoginResult LoginDialog::loginResult() const
 
 void LoginDialog::handleLogin()
 {
+    // 对话框只负责收集输入和展示结果，具体认证规则交给 LoginManager。
     m_loginResult = m_loginManager.authenticate(m_usernameEdit->text(), m_passwordEdit->text());
 
     if (!m_loginResult.success) {

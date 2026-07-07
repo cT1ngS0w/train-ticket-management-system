@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
+    // 启动时先建立数据库入口，再注入 LoginManager，方便后续接入真实用户表验证。
     DatabaseManager databaseManager;
     databaseManager.initialize();
 

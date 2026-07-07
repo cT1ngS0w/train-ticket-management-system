@@ -5,6 +5,7 @@
 #include <QString>
 
 namespace {
+// 数据库中 role 用整数保存，这里集中转换为登录模块使用的枚举。
 UserRole roleFromDatabaseValue(int role)
 {
     switch (role) {
@@ -26,6 +27,7 @@ LoginManager::LoginManager(const DatabaseManager *databaseManager)
 
 LoginResult LoginManager::authenticate(const QString &username, const QString &password) const
 {
+    // 先做界面无关的基础输入校验，避免空值继续进入后续认证流程。
     const QString trimmedUsername = username.trimmed();
 
     if (trimmedUsername.isEmpty()) {
@@ -43,6 +45,7 @@ LoginResult LoginManager::authenticate(const QString &username, const QString &p
                 QStringLiteral("Login service is not connected.")};
     }
 
+    // 账号密码认证只通过 DatabaseManager 接口，保持 UI -> LoginManager -> DatabaseManager 的分层。
     const auto userAccount = m_databaseManager->findUserByCredentials(trimmedUsername, password);
 
     if (!userAccount.has_value()) {
