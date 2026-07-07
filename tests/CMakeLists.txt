@@ -1,3 +1,28 @@
 cmake_minimum_required(VERSION 3.16)
 
-message(STATUS "BUILD_TESTS is ON, but no tests have been added yet.")
+add_executable(database_init_smoke_test
+    database_init_smoke_test.cpp
+    ../src/database/database_manager.cpp
+)
+
+target_include_directories(database_init_smoke_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../include
+)
+
+target_link_libraries(database_init_smoke_test PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Sql
+)
+
+add_test(
+    NAME database_init_smoke_test
+    COMMAND database_init_smoke_test
+)
+
+add_custom_command(TARGET database_init_smoke_test POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        $<TARGET_FILE_DIR:database_init_smoke_test>/database
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_CURRENT_SOURCE_DIR}/../database/schema_v1.sql
+        $<TARGET_FILE_DIR:database_init_smoke_test>/database/schema_v1.sql
+)
